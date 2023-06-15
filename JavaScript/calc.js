@@ -50,17 +50,17 @@ function NumAssign(e){                               //function to store operand
     })
 
     if(calculator.Operator == ''){
-        calculator.Num1 = calculator.Num1 + (e.target.textContent);
+        calculator.Num1 = calculator.Num1 + (e.target.getAttribute('value'));
         DispInput.textContent = calculator.Num1;
     }
     else{
-        calculator.Num2 = calculator.Num2 + e.target.textContent;
+        calculator.Num2 = calculator.Num2 + e.target.getAttribute('value');
         DispInput.textContent = calculator.Num2;
     }
 }
 
 function OpAssign(e){                                  //function to store operator and perform operations
-    if(e.target.textContent=='='){
+    if(e.target.getAttribute('value')=='='){
         if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
             DispInput.textContent=+toFixedWithoutZeros(calculator.calculate(),5);
             DispOperator.textContent = '';
@@ -80,12 +80,12 @@ function OpAssign(e){                                  //function to store opera
             DispStoredValue.textContent=+toFixedWithoutZeros(calculator.calculate(),5);
             calculator.Num1=DispStoredValue.textContent;
             calculator.Num2 = '';
-            calculator.Operator=e.target.textContent;
+            calculator.Operator=e.target.getAttribute('value');
             DispInput.textContent='';
-            DispOperator.textContent=e.target.textContent;
+            DispOperator.textContent=e.target.getAttribute('value');
         }
         else{
-            calculator.Operator = e.target.textContent;
+            calculator.Operator = e.target.getAttribute('value');
             
             DispOperator.textContent=e.target.textContent;
 
