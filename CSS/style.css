@@ -63,7 +63,7 @@ body{
 }
 
 .clear,.delete{
-    height: 2rem;
+    height: 2.5rem;
     width: 100%;
     margin: 2%;
     border: 1px solid black;
@@ -72,7 +72,7 @@ body{
     align-items: center;
     transition: background-color,0.2s;
     transition: width 0.2s, height 0.2s;
-    background-color: white;
+    background-color: rgb(236, 163, 134);
     box-shadow: 0 0 1px 1px black;
 }
 
@@ -86,9 +86,9 @@ body{
     font-size: 150%;
     box-shadow: 0 0 1px 1px black;
     background-color: white;
-    margin: 5px;
+    margin: 5.2px;
     display: flex;
-    height: 5rem;
+    height: 4.8rem;
     border: 1px solid black;
     justify-content: center;
     align-items: center;
@@ -97,7 +97,7 @@ body{
 }
 
 .number{
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(252, 252, 186);
 }
 
 .key:hover{

@@ -1,4 +1,42 @@
 //-------------------------------------------Function Declarations-------------------------------------------
+
+
+function KeyBoardEventHandler(e){
+    if(e.code =='Space'){
+        return;
+    }
+    else{
+        if (e.key >= 0 && e.key <= 9){
+            NumAssign(e);
+        }
+        else if(e.key==='.'){
+            noTwoDecimals()
+        }
+        else if(e.key==="="||e.key=='Enter'){
+            if(calculator.Num1==''){
+                return;
+            }
+            else{
+                OpAssign(e);
+            }
+        }
+        else if(e.key=='Backspace'){
+            Delete();
+        }
+        else if(e.key==='+'||e.key=='-'||e.key=='*'||e.key=='/'){
+            e.preventDefault();
+            if(calculator.Num1==''){
+                return;
+            }
+            else{
+                OpAssign(e);
+            }
+        }
+    }
+};
+
+
+
 function ScaleUp(e){
     e.target.setAttribute('style','transform:scale(1,1);');
 };
@@ -7,9 +45,6 @@ function ScaleDown(e){
     e.target.setAttribute('style','transform:scale(0.9,0.9);');
 };
 
-function KeyPressed(e){
-    console.log(e.key);
-}
 
 function toFixedWithoutZeros(num, precision){
     return `${Number.parseFloat(num.toFixed(precision))}`;
@@ -49,46 +84,94 @@ function NumAssign(e){                               //function to store operand
         element.addEventListener('click',OpAssign);
     })
 
-    if(calculator.Operator == ''){
-        calculator.Num1 = calculator.Num1 + (e.target.getAttribute('value'));
-        DispInput.textContent = calculator.Num1;
+    if(e instanceof MouseEvent){
+        if(calculator.Operator == ''){
+            calculator.Num1 = calculator.Num1 + (e.target.getAttribute('value'));
+            DispInput.textContent = calculator.Num1;
+        }
+        else{
+            calculator.Num2 = calculator.Num2 + e.target.getAttribute('value');
+            DispInput.textContent = calculator.Num2;
+        }
     }
-    else{
-        calculator.Num2 = calculator.Num2 + e.target.getAttribute('value');
-        DispInput.textContent = calculator.Num2;
+    else if(e instanceof KeyboardEvent){
+        if(calculator.Operator == ''){
+            calculator.Num1 = calculator.Num1 + (e.key);
+            DispInput.textContent = calculator.Num1;
+        }
+        else{
+            calculator.Num2 = calculator.Num2 + e.key;
+            DispInput.textContent = calculator.Num2;
+        }
     }
 }
 
 function OpAssign(e){                                  //function to store operator and perform operations
-    if(e.target.getAttribute('value')=='='){
-        if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
-            DispInput.textContent=+toFixedWithoutZeros(calculator.calculate(),5);
-            DispOperator.textContent = '';
-            DispStoredValue.textContent='';
-            Digit.forEach(element=>{
-                element.removeEventListener('click',NumAssign);
-            })
-            Op.forEach(element=>{
-                element.removeEventListener('click',OpAssign);
-            })
-            Del.removeEventListener('click',Delete);
-
-        }
-    }
-    else{
-        if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
-            DispStoredValue.textContent=+toFixedWithoutZeros(calculator.calculate(),5);
-            calculator.Num1=DispStoredValue.textContent;
-            calculator.Num2 = '';
-            calculator.Operator=e.target.getAttribute('value');
-            DispInput.textContent='';
-            DispOperator.textContent=e.target.getAttribute('value');
+    if(e instanceof MouseEvent){
+        if(e.target.getAttribute('value')=='='){
+            if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
+                DispInput.textContent=+toFixedWithoutZeros(calculator.calculate(),10);
+                DispOperator.textContent = '';
+                DispStoredValue.textContent='';
+                Digit.forEach(element=>{
+                    element.removeEventListener('click',NumAssign);
+                })
+                Op.forEach(element=>{
+                    element.removeEventListener('click',OpAssign);
+                })
+                Del.removeEventListener('click',Delete);
+    
+            }
         }
         else{
-            calculator.Operator = e.target.getAttribute('value');
-            
-            DispOperator.textContent=e.target.textContent;
-
+            if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
+                DispStoredValue.textContent=+toFixedWithoutZeros(calculator.calculate(),10);
+                calculator.Num1=DispStoredValue.textContent;
+                calculator.Num2 = '';
+                calculator.Operator=e.target.getAttribute('value');
+                DispInput.textContent='';
+                DispOperator.textContent=e.target.getAttribute('value');
+            }
+            else{
+                calculator.Operator = e.target.getAttribute('value');
+                
+                DispOperator.textContent=e.target.textContent;
+    
+            }
+        }
+    }
+    else if(e instanceof KeyboardEvent){
+        if(e.key=='='||e.key=='Enter'){
+            if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
+                DispInput.textContent=+toFixedWithoutZeros(calculator.calculate(),10);
+                DispOperator.textContent = '';
+                DispStoredValue.textContent='';
+                Digit.forEach(element=>{
+                    element.removeEventListener('click',NumAssign);
+                })
+                Op.forEach(element=>{
+                    element.removeEventListener('click',OpAssign);
+                })
+                Del.removeEventListener('click',Delete);
+                window.removeEventListener('keydown',KeyBoardEventHandler);
+    
+            }
+        }
+        else{
+            if((calculator.Num1!='')&&(calculator.Num2!='')&&(calculator.Operator!='')){
+                DispStoredValue.textContent=+toFixedWithoutZeros(calculator.calculate(),10);
+                calculator.Num1=DispStoredValue.textContent;
+                calculator.Num2 = '';
+                calculator.Operator=e.key;
+                DispInput.textContent='';
+                DispOperator.textContent=e.key;
+            }
+            else{
+                calculator.Operator = e.key;
+                
+                DispOperator.textContent=e.key;
+    
+            }
         }
     }
 }
@@ -101,6 +184,7 @@ function ClearAll(){                                            //function to cl
         element.addEventListener('click',NumAssign);
     })
     Del.addEventListener('click',Delete);
+    window.addEventListener('keydown',KeyBoardEventHandler)
 }
 
 function Delete(e){                                             //function to create a backspace like button
@@ -110,7 +194,8 @@ function Delete(e){                                             //function to cr
         if(calculator.Num1.length==0&&calculator.Num2.length==0){
             Op.forEach(element=>{
                 element.removeEventListener('click',OpAssign);
-            })   
+            })
+
         }
     }
     else if(calculator.Operator!=''&&calculator.Num2!=''){
@@ -178,7 +263,7 @@ const Decimal = document.querySelector('.decimal');
 
 
 //---------------------------------------------Event Listeners---------------------------------------------
-window.addEventListener('keydown',KeyPressed);
+window.addEventListener('keydown',KeyBoardEventHandler);
 Decimal.addEventListener('click',noTwoDecimals);
 
 Buttons.forEach(element => {
