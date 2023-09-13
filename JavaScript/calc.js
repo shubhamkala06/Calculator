@@ -120,6 +120,7 @@ function OpAssign(e){                                  //function to store opera
                     element.removeEventListener('click',OpAssign);
                 })
                 Del.removeEventListener('click',Delete);
+                window.removeEventListener('keydown',KeyBoardEventHandler);
     
             }
         }
