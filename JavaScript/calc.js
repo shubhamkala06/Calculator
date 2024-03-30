@@ -131,7 +131,7 @@ function OpAssign(e){                                  //function to store opera
                 calculator.Num2 = '';
                 calculator.Operator=e.target.getAttribute('value');
                 DispInput.textContent='';
-                DispOperator.textContent=e.target.getAttribute('value');
+                DispOperator.textContent=e.target.textContent;
             }
             else{
                 calculator.Operator = e.target.getAttribute('value');
